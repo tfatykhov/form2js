@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+	<title></title>
+</head>
+
+<body>
+
+<form id="testForm" action="javascript:test()">
+	<dl>
+		<dt><label for="nameFirst">First name:</label></dt>
+		<dd><input id="nameFirst" type="text" name="person.name.first"/></dd>
+	</dl>
+
+	<dl>
+		<dt><label for="nameLast">Last name:</label></dt>
+		<dd><input id="nameLast" type="text" name="person.name.last"/></dd>
+	</dl>
+
+	<dl>
+		<dt>Gender:</dt>
+		<dd><label><input type="radio" name="person.gender" id="genderMale" value="male" /> Male</label></dd>
+		<dd><label><input type="radio" name="person.gender" id="genderFemale" value="female" /> Female</label></dd>
+	</dl>
+
+	<dl>
+		<dt>City</dt>
+		<dd>
+			<select name="person.city">
+				<optgroup label="Russia">
+					<option value="msk">Moscow</option>
+					<option value="spb">St. Petersburg</option>
+					<option value="nsk">Novosibirsk</option>
+					<option value="ekb">Ekaterinburg</option>
+				</optgroup>
+				<optgroup label="Europe">
+					<option value="london">London</option>
+					<option value="paris">Paris</option>
+					<option value="madrid">Madrid</option>
+				</optgroup>
+			</select>
+		</dd>
+	</dl>
+
+	<dl>
+		<dt>Favorite food</dt>
+		<dd><label><input type="checkbox" name="person.favFood[]" value="steak"/> Steak</label></dd>
+		<dd><label><input type="checkbox" name="person.favFood[]" value="pizza"/> Pizza</label></dd>
+		<dd><label><input type="checkbox" name="person.favFood[]" value="chicken"/> Chicken</label></dd>
+	</dl>
+
+	<dl>
+		<dt>Choose some colors</dt>
+		<dd>
+			<select name="person.colors" multiple="multiple">
+				<optgroup label="Warm">
+					<option value="green">Green</option>
+					<option value="orange">Orange</option>
+					<option value="red">Red</option>
+				</optgroup>
+				<optgroup label="Cold">
+					<option value="blue">blue</option>
+					<option value="purple">purple</option>
+				</optgroup>
+			</select>
+		</dd>
+	</dl>
+
+	<dl>
+		<dt>Give us your five friends' names and emails</dt>
+		<dd>
+			<label>Email <input type="text" name="person.friends[0].email" /></label>
+			<label>Name <input type="text" name="person.friends[0].name"/></label>
+		</dd>
+		<dd>
+			<label>Email <input type="text" name="person.friends[1].email" /></label>
+			<label>Name <input type="text" name="person.friends[1].name"/></label>
+		</dd>
+		<dd>
+			<label>Email <input type="text" name="person.friends[2].email" /></label>
+			<label>Name <input type="text" name="person.friends[2].name"/></label>
+		</dd>
+		<dd>
+			<label>Email <input type="text" name="person.friends[3].email" /></label>
+			<label>Name <input type="text" name="person.friends[3].name"/></label>
+		</dd>
+		<dd>
+			<label>Email <input type="text" name="person.friends[4].email" /></label>
+			<label>Name <input type="text" name="person.friends[4].name"/></label>
+		</dd>
+	</dl>
+
+	<dl>
+		<dt></dt>
+		<dd><input type="submit" /></dd>
+	</dl>
+</form>
+
+<code id="testArea">
+</code>
+
+<script type="text/javascript" src="../src/form2json.js"></script>
+<script type="text/javascript" src="json2.js"></script>
+<script type="text/javascript">
+	function test()
+	{
+		var form = document.getElementById('testForm');
+		var formData = form2json(form);
+		document.getElementById('testArea').innerHTML = JSON.stringify(formData);
+	}
+</script>
+</body>
+</html>
