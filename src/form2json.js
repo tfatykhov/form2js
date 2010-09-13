@@ -11,8 +11,10 @@
      * "name" attribute defines structure of resulting object
      *
      * @param rootNode {DOMElement} root form element
+     * @param delimiter {String} structure parts delimiter defaults to '.'
      */
-    window.form2json = function(rootNode) {
+    window.form2json = function(rootNode, delimiter) {
+        delimiter = delimiter || '.';
         var formValues = getFormValues(rootNode);
         var result = {};
         var arrays = {};
@@ -22,7 +24,7 @@
             if (value === '') continue;
 
             var name = formValues[i].name;
-            var nameParts = name.split('.');
+            var nameParts = name.split(delimiter);
 
             var currResult = result;
 
