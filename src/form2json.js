@@ -10,10 +10,11 @@
      * Returns form values represented as Javascript object
      * "name" attribute defines structure of resulting object
      *
-     * @param rootNode {DOMElement} root form element
+     * @param rootNode {DOMElement|String} root form element (or it's id)
      * @param delimiter {String} structure parts delimiter defaults to '.'
      */
     window.form2json = function(rootNode, delimiter) {
+	    rootNode = typeof rootNode == 'string' ? document.getElementById(rootNode) : rootNode;
         delimiter = delimiter || '.';
         var formValues = getFormValues(rootNode);
         var result = {};
