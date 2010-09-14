@@ -82,7 +82,7 @@
         var currentNode = rootNode.firstChild;
 
         while (currentNode) {
-            if (currentNode.nodeName.isIn('INPUT', 'SELECT', 'TEXTAREA', 'FIELDSET')) {
+            if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA|FIELDSET/i)) {
                 result.push({ name: currentNode.name, value: getFieldValue(currentNode)});
             }
             else {
@@ -104,7 +104,7 @@
                 }
             }
             else {
-                if (!fieldNode.type.toLowerCase().isIn('button', 'reset', 'submit', 'image')) {
+                if (!fieldNode.type.toLowerCase().match(/button|reset|submit|image/i)) {
                     return fieldNode.value;
                 }
             }
@@ -122,16 +122,6 @@
 
         return '';
     }
-
-    String.prototype.isIn = function() {
-        for (var i = 0; i < arguments.length; i++) {
-            if (this == arguments[i]) {
-                return true;
-            }
-        }
-
-        return false;
-    };
 
     function getSelectedOptionValue(selectNode) {
         var multiple = selectNode.multiple;
