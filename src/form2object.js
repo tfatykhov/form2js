@@ -6,14 +6,14 @@
 
 (function() {
 
-    /**
+	/**
      * Returns form values represented as Javascript object
      * "name" attribute defines structure of resulting object
      *
-     * @param rootNode {DOMElement|String} root form element (or it's id)
+     * @param rootNode {Element|String} root form element (or it's id)
      * @param delimiter {String} structure parts delimiter defaults to '.'
      */
-    window.form2json = function(rootNode, delimiter) {
+    window.form2object = function(rootNode, delimiter) {
 	    rootNode = typeof rootNode == 'string' ? document.getElementById(rootNode) : rootNode;
         delimiter = delimiter || '.';
         var formValues = getFormValues(rootNode);
@@ -32,14 +32,16 @@
             for (var j = 0; j < nameParts.length; j++) {
                 var namePart = nameParts[j];
 
+	            var arrName;
+
                 if (namePart.indexOf('[]') > -1 && j == nameParts.length - 1) {
-                    var arrName = namePart.substr(0, namePart.indexOf('['));
+                    arrName = namePart.substr(0, namePart.indexOf('['));
 
                     if (!currResult[arrName]) currResult[arrName] = [];
                     currResult[arrName].push(value);
                 }
                 else if (namePart.indexOf('[') > -1) {
-                    var arrName = namePart.substr(0, namePart.indexOf('['));
+                    arrName = namePart.substr(0, namePart.indexOf('['));
                     var arrIdx = namePart.replace(/^[a-z]+\[|\]$/gi, '');
 
                     /*
@@ -76,7 +78,7 @@
         }
 
         return result;
-    }
+    };
 
     function getFormValues(rootNode) {
         var result = [];
@@ -135,5 +137,12 @@
 
         return result;
     }
+
+	/**
+	 * @deprecated Use form2object() instead
+	 * @param rootNode
+	 * @param delimiter
+	 */
+	window.form2json = window.form2object;
 
 })();
