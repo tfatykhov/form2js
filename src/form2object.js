@@ -122,7 +122,7 @@
 
 		while (currentNode)
 		{
-			if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA|FIELDSET/i))
+			if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA/i))
 			{
 				result.push({ name: currentNode.name, value: getFieldValue(currentNode)});
 			}
