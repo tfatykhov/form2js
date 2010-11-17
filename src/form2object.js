@@ -32,11 +32,14 @@
 	 *
 	 * @param rootNode {Element|String} root form element (or it's id)
 	 * @param delimiter {String} structure parts delimiter defaults to '.'
+	 * @param skipEmpty {Boolean} should skip empty text values, defaults to true
 	 */
-	window.form2object = function(rootNode, delimiter)
+	window.form2object = function(rootNode, delimiter, skipEmpty)
 	{
+		if (typeof skipEmpty == 'undefined' || skipEmpty == null) skipEmpty = true;
+		if (typeof delimiter == 'undefined' || delimiter == null) delimiter = '.';
 		rootNode = typeof rootNode == 'string' ? document.getElementById(rootNode) : rootNode;
-		delimiter = delimiter || '.';
+
 		var formValues = getFormValues(rootNode);
 		var result = {};
 		var arrays = {};
@@ -44,7 +47,7 @@
 		for (var i = 0; i < formValues.length; i++)
 		{
 			var value = formValues[i].value;
-			if (value === '') continue;
+			if (skipEmpty && value === '') continue;
 
 			var name = formValues[i].name;
 			var nameParts = name.split(delimiter);
@@ -124,7 +127,8 @@
 		{
 			if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA/i))
 			{
-				result.push({ name: currentNode.name, value: getFieldValue(currentNode)});
+				var fieldValue = getFieldValue(currentNode);
+				if (fieldValue !== null) result.push({ name: currentNode.name, value: fieldValue});
 			}
 			else
 			{
@@ -169,7 +173,8 @@
 			default:
 				break;
 		}
-		return '';
+
+		return null;
 	}
 
 	function getSelectedOptionValue(selectNode)
