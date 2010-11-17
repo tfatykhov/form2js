@@ -105,13 +105,79 @@
 	</dl>
 
 	<dl>
+		<dt>Textarea test</dt>
+		<dd>
+			<textarea rows="5" cols="20" name="person.bio">Some bio here, just for test.</textarea>
+		</dd>
+	</dl>
+
+	<dl>
+		<dt>Tables test</dt>
+		<dd>
+			<table>
+				<tr>
+					<td>
+						<select name="table.sides[0].player" id="p1" style="width:100px">
+							<option value="spartacus">Spartacus</option>
+							<option value="dinamo">Dinamo</option>
+						</select>
+					</td>
+					<td align="center">
+						vs
+					</td>
+					<td>
+						<select name="table.sides[1].player" id="p2" style="width:100px">
+							<option value="spartacus">Spartacus</option>
+							<option value="dinamo">Dinamo</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<select name="table.sides[0].score" id="s1" style="width:100px">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+						</select>
+					</td>
+					<td align="center">
+						-
+					</td>
+					<td>
+						<select name="table.sides[1].score" id="s2" style="width:100px">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+
+		</dd>
+	</dl>
+
+	<dl>
 		<dt></dt>
 		<dd><input type="submit" /></dd>
 	</dl>
 </form>
 
-<code id="testArea">
-</code>
+<pre><code id="testArea">
+</code></pre>
 
 <script type="text/javascript" src="../src/form2object.js"></script>
 <script type="text/javascript" src="json2.js"></script>
@@ -119,7 +185,7 @@
 	function test()
 	{
 		var formData = form2object('testForm');
-		document.getElementById('testArea').innerHTML = JSON.stringify(formData);
+		document.getElementById('testArea').innerHTML = JSON.stringify(formData, null, '\t');
 	}
 </script>
 </body>

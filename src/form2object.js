@@ -140,38 +140,35 @@
 
 	function getFieldValue(fieldNode)
 	{
-		if (fieldNode.nodeName == 'INPUT')
-		{
-			if (fieldNode.type.toLowerCase() == 'radio' || fieldNode.type.toLowerCase() == 'checkbox')
-			{
-				if (fieldNode.checked)
-				{
-					return fieldNode.value;
-				}
-			}
-			else
-			{
-				if (!fieldNode.type.toLowerCase().match(/button|reset|submit|image/i))
-				{
-					return fieldNode.value;
-				}
-			}
-		}
-		else
-		{
-			if (fieldNode.nodeName == 'TEXTAREA')
-			{
-				return fieldNode.innerHTML;
-			}
-			else
-			{
-				if (fieldNode.nodeName == 'SELECT')
-				{
-					return getSelectedOptionValue(fieldNode);
-				}
-			}
-		}
+		switch (fieldNode.nodeName) {
+			case 'INPUT':
+			case 'TEXTAREA':
+				switch (fieldNode.type.toLowerCase()) {
+					case 'radio':
+					case 'checkbox':
+						if (fieldNode.checked) return fieldNode.value;
+						break;
 
+					case 'button':
+					case 'reset':
+					case 'submit':
+					case 'image':
+						return '';
+						break;
+
+					default:
+						return fieldNode.value;
+						break;
+				}
+				break;
+
+			case 'SELECT':
+				return getSelectedOptionValue(fieldNode);
+				break;
+
+			default:
+				break;
+		}
 		return '';
 	}
 
