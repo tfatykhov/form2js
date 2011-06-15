@@ -33,14 +33,15 @@
 	 * @param rootNode {Element|String} root form element (or it's id)
 	 * @param delimiter {String} structure parts delimiter defaults to '.'
 	 * @param skipEmpty {Boolean} should skip empty text values, defaults to true
+	 * @param nodeCallback {Function} custom function to get node value
 	 */
-	window.form2object = function(rootNode, delimiter, skipEmpty)
+	window.form2object = function(rootNode, delimiter, skipEmpty, nodeCallback)
 	{
 		if (typeof skipEmpty == 'undefined' || skipEmpty == null) skipEmpty = true;
 		if (typeof delimiter == 'undefined' || delimiter == null) delimiter = '.';
 		rootNode = typeof rootNode == 'string' ? document.getElementById(rootNode) : rootNode;
 
-		var formValues = getFormValues(rootNode),
+		var formValues = getFormValues(rootNode, nodeCallback),
 			result = {},
 			arrays = {};
 
@@ -127,21 +128,27 @@
 		return result;
 	};
 
-	function getFormValues(rootNode)
+	function getFormValues(rootNode, nodeCallback)
 	{
 		var result = [];
 		var currentNode = rootNode.firstChild;
 
 		while (currentNode)
 		{
-			if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA/i))
+			var callbackResult = nodeCallback && nodeCallback(currentNode);
+
+			if (callbackResult && callbackResult.name)
+			{
+				result.push(callbackResult);
+			}
+			else if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA/i))
 			{
 				var fieldValue = getFieldValue(currentNode);
 				if (fieldValue !== null) result.push({ name: currentNode.name, value: fieldValue});
 			}
 			else
 			{
-				var subresult = getFormValues(currentNode);
+				var subresult = getFormValues(currentNode, nodeCallback);
 				result = result.concat(subresult);
 			}
 
