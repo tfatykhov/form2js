@@ -40,29 +40,32 @@
 		if (typeof delimiter == 'undefined' || delimiter == null) delimiter = '.';
 		rootNode = typeof rootNode == 'string' ? document.getElementById(rootNode) : rootNode;
 
-		var formValues = getFormValues(rootNode);
-		var result = {};
-		var arrays = {};
+		var formValues = getFormValues(rootNode),
+			result = {},
+			arrays = {};
 
 		for (var i = 0; i < formValues.length; i++)
 		{
 			var value = formValues[i].value;
+
 			if (skipEmpty && value === '') continue;
 
-			var name = formValues[i].name;
-			var nameParts = name.split(delimiter);
+			var name = formValues[i].name,
+				nameParts = name.split(delimiter),
+				currResult = result,
+				arrNameFull = '';
 
-			var currResult = result;
 
 			for (var j = 0; j < nameParts.length; j++)
 			{
-				var namePart = nameParts[j];
-
-				var arrName;
+				var arrName,
+					arrIdx,
+					namePart = nameParts[j];
 
 				if (namePart.indexOf('[]') > -1 && j == nameParts.length - 1)
 				{
 					arrName = namePart.substr(0, namePart.indexOf('['));
+					arrNameFull += arrName;
 
 					if (!currResult[arrName]) currResult[arrName] = [];
 					currResult[arrName].push(value);
@@ -72,7 +75,10 @@
 					if (namePart.indexOf('[') > -1)
 					{
 						arrName = namePart.substr(0, namePart.indexOf('['));
-						var arrIdx = namePart.replace(/^[a-z]+\[|\]$/gi, '');
+						arrIdx = namePart.replace(/^[a-z]+\[|\]$/gi, '');
+
+						/* Unique array name */
+						arrNameFull += arrName + arrIdx;
 
 						/*
 						 * Because arrIdx in field name can be not zero-based and step can be
@@ -81,26 +87,29 @@
 						 * added array element
 						 */
 
-						if (!arrays[arrName]) arrays[arrName] = {};
+						if (!arrays[arrNameFull]) arrays[arrNameFull] = {};
 						if (!currResult[arrName]) currResult[arrName] = [];
 
 						if (j == nameParts.length - 1)
 						{
 							currResult[arrName].push(value);
+							arrays[arrNameFull][arrIdx] = currResult[arrName][currResult[arrName].length - 1];
 						}
 						else
 						{
-							if (!arrays[arrName][arrIdx])
+							if (!arrays[arrNameFull][arrIdx])
 							{
 								currResult[arrName].push({});
-								arrays[arrName][arrIdx] = currResult[arrName][currResult[arrName].length - 1];
+								arrays[arrNameFull][arrIdx] = currResult[arrName][currResult[arrName].length - 1];
 							}
 						}
 
-						currResult = arrays[arrName][arrIdx];
+						currResult = arrays[arrNameFull][arrIdx];
 					}
 					else
 					{
+						arrNameFull += namePart;
+
 						if (j < nameParts.length - 1) /* Not the last part of name - means object */
 						{
 							if (!currResult[namePart]) currResult[namePart] = {};
